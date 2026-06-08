@@ -2,11 +2,14 @@ name: "Submit a #fail"
 description: Share an AI agent fail, public reference, screenshot, video, or workflow oops for while(oops)
 title: "[FAIL]: Short title here"
 labels: ["submission", "needs-review"]
+type: Task
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for submitting a fail.
+
+        You only need to complete the form fields below. If GitHub shows extra metadata sections like Type, Priority, Projects, or Milestone, leave them as-is.
 
         Redact secrets, API keys, customer data, private URLs, internal company details, and screenshots that show anything sensitive. Submissions are reviewed before publishing.
 
