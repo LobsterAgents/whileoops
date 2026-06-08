@@ -1,4 +1,4 @@
-name: Submit a #fail
+name: "Submit a #fail"
 description: Share an AI agent fail, public reference, screenshot, video, or workflow oops for whileoops
 title: "[FAIL]: "
 labels: ["submission", "needs-review"]
