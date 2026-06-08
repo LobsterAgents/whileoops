@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises';
 
 const repo = process.env.WHILEOOPS_REPO || 'LobsterAgents/whileoops';
 const outputPath = new URL('../src/data/generated/submissions.json', import.meta.url);
-const apiUrl = `https://api.github.com/repos/${repo}/issues?state=open&labels=approved&per_page=100`;
+const perPage = 100;
 
 const headers = {
   Accept: 'application/vnd.github+json',
@@ -13,13 +13,7 @@ if (process.env.GITHUB_TOKEN) {
   headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
 }
 
-const response = await fetch(apiUrl, { headers });
-
-if (!response.ok) {
-  throw new Error(`GitHub approved submission fetch failed: ${response.status} ${response.statusText}`);
-}
-
-const issues = await response.json();
+const issues = await fetchApprovedIssues();
 
 const submissions = issues
   .filter((issue) => !issue.pull_request)
@@ -45,6 +39,26 @@ const submissions = issues
 
 await writeFile(outputPath, `${JSON.stringify(submissions, null, 2)}\n`);
 console.log(`Wrote ${submissions.length} approved submission(s) to ${outputPath.pathname}`);
+
+async function fetchApprovedIssues() {
+  const allIssues = [];
+
+  for (let page = 1; ; page += 1) {
+    const apiUrl = `https://api.github.com/repos/${repo}/issues?state=open&labels=approved&per_page=${perPage}&page=${page}`;
+    const response = await fetch(apiUrl, { headers });
+
+    if (!response.ok) {
+      throw new Error(`GitHub approved submission fetch failed: ${response.status} ${response.statusText}`);
+    }
+
+    const pageIssues = await response.json();
+    allIssues.push(...pageIssues);
+
+    if (pageIssues.length < perPage) {
+      return allIssues;
+    }
+  }
+}
 
 function parseIssueBody(body) {
   const fields = {};

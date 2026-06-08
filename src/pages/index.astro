@@ -7,7 +7,7 @@ const issueFormUrl = site.submitUrl;
 const fails = approvedSubmissions.length > 0 ? approvedSubmissions : site.sampleFails;
 const homepageFails = fails.slice(0, 12);
 const socialImage = new URL(site.socialImagePath, canonical).toString();
-const wallShareLinks = getShareLinks(canonical, 'AI agents are just expensive while loops. Send #fail.');
+const wallShareLinks = getShareLinks(canonical, 'AI agents are just expensive while loops. Send oops.');
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -71,12 +71,12 @@ function slugify(value) {
     <meta property="og:image:secure_url" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="while(oops): AI agents are just expensive while loops. Send #fail." />
+    <meta property="og:image:alt" content="while(oops): AI agents are just expensive while loops. Send oops." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={site.title} />
     <meta name="twitter:description" content={site.description} />
     <meta name="twitter:image" content={socialImage} />
-    <meta name="twitter:image:alt" content="while(oops): AI agents are just expensive while loops. Send #fail." />
+    <meta name="twitter:image:alt" content="while(oops): AI agents are just expensive while loops. Send oops." />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </head>
   <body>
@@ -85,7 +85,7 @@ function slugify(value) {
         <nav aria-label="Primary">
           <a class="brand" href="/">while(oops)</a>
           <div class="nav-links">
-            <a href="#fails">Browse</a>
+            <a href={site.wallPath}>Wall</a>
             <a href="#submit">Submit</a>
             <a href="/terms/">Terms</a>
             <a href={site.repoUrl}>GitHub</a>
@@ -95,14 +95,14 @@ function slugify(value) {
         <div class="hero-layout">
           <div class="hero-copy">
             <p class="eyebrow">Public incident reports for agentic oops</p>
-            <h1>AI agents are just expensive while loops. Send #fail.</h1>
+            <h1>AI agents are just expensive while loops. Send oops.</h1>
             <p class="lede">
               A tiny museum of automation faceplants, runaway tools, token bonfires, and workflows
               that really should have asked a human sooner.
             </p>
             <div class="actions">
               <a class="button primary" href={issueFormUrl}>Submit a #fail</a>
-              <a class="button secondary" href="#fails">Read the wall</a>
+              <a class="button secondary" href={site.wallPath}>Read the wall</a>
             </div>
           </div>
 
@@ -132,7 +132,7 @@ function slugify(value) {
           <div>
             <p class="eyebrow">The wall</p>
             <h2 id="fails-heading">
-              {approvedSubmissions.length > 0 ? 'Latest approved #fails from the loop mines.' : 'Sample #fails from the loop mines.'}
+              {approvedSubmissions.length > 0 ? 'Latest approved oops from the loop mines.' : 'Sample oops from the loop mines.'}
             </h2>
             {approvedSubmissions.length > 12 && (
               <p class="section-note">
@@ -190,7 +190,7 @@ function slugify(value) {
           )})}
         </div>
         <div class="wall-footer">
-          <a class="button secondary" href={site.approvedIssuesUrl}>Browse the full archive</a>
+          <a class="button secondary" href={site.wallPath}>Browse the full archive</a>
         </div>
       </section>
 

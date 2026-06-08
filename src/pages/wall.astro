@@ -1,0 +1,531 @@
+---
+import { site } from '../data/site';
+import approvedSubmissions from '../data/generated/submissions.json';
+
+const canonical = `https://${site.domain}/wall/`;
+const socialImage = new URL(site.socialImagePath, canonical).toString();
+const fails = approvedSubmissions.length > 0 ? approvedSubmissions : site.sampleFails;
+const categories = [...new Set(fails.map((fail) => fail.category).filter(Boolean))].sort();
+const wallShareLinks = getShareLinks(canonical, 'AI agents are just expensive while loops. Send oops.');
+
+function getFailId(fail) {
+  return fail.number ? `fail-${fail.number}` : `fail-${slugify(fail.title)}`;
+}
+
+function getShareLinks(url, text) {
+  const encodedUrl = encodeURIComponent(url);
+  const encodedText = encodeURIComponent(text);
+
+  return [
+    {
+      label: 'X',
+      href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
+    },
+    {
+      label: 'LinkedIn',
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    },
+    {
+      label: 'Reddit',
+      href: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedText}`,
+    },
+    {
+      label: 'Facebook',
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    },
+  ];
+}
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>The Wall | while(oops)</title>
+    <meta
+      name="description"
+      content="Browse approved while(oops) AI agent fails, automation faceplants, token bonfires, and expensive loops."
+    />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Wall | while(oops)" />
+    <meta
+      property="og:description"
+      content="Browse approved while(oops) AI agent fails, automation faceplants, token bonfires, and expensive loops."
+    />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="while(oops): AI agents are just expensive while loops. Send oops." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="The Wall | while(oops)" />
+    <meta
+      name="twitter:description"
+      content="Browse approved while(oops) AI agent fails, automation faceplants, token bonfires, and expensive loops."
+    />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content="while(oops): AI agents are just expensive while loops. Send oops." />
+  </head>
+  <body>
+    <main>
+      <nav aria-label="Primary">
+        <a class="brand" href="/">while(oops)</a>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a href={site.submitUrl}>Submit</a>
+          <a href="/terms/">Terms</a>
+          <a href={site.repoUrl}>GitHub</a>
+        </div>
+      </nav>
+
+      <header class="page-head">
+        <div>
+          <p class="eyebrow">The wall</p>
+          <h1>All approved oops.</h1>
+          <p class="lede">
+            Browse the full archive of approved submissions. The homepage stays curated; this page
+            is where the pile can grow.
+          </p>
+        </div>
+        <div class="share-panel" aria-label="Share the wall">
+          <span>Share the wall</span>
+          <div>
+            {wallShareLinks.map((link) => (
+              <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      <section class="controls" aria-label="Wall filters">
+        <label>
+          <span>Search</span>
+          <input type="search" id="wall-search" placeholder="Search titles, tools, authors..." />
+        </label>
+        <label>
+          <span>Category</span>
+          <select id="wall-category">
+            <option value="">All categories</option>
+            {categories.map((category) => <option value={category}>{category}</option>)}
+          </select>
+        </label>
+        <p id="wall-count" aria-live="polite">{fails.length} item{fails.length === 1 ? '' : 's'}</p>
+      </section>
+
+      <section class="wall-grid" aria-label="Approved submissions">
+        {fails.map((fail) => {
+          const failUrl = new URL(`#${getFailId(fail)}`, canonical).toString();
+          const shareText = `${fail.title} | while(oops)`;
+          const itemShareLinks = getShareLinks(failUrl, shareText);
+          const searchText = [
+            fail.title,
+            fail.body,
+            fail.category,
+            fail.severity,
+            fail.tool,
+            fail.author,
+            fail.submissionType,
+          ]
+            .filter(Boolean)
+            .join(' ')
+            .toLowerCase();
+
+          return (
+            <article
+              id={getFailId(fail)}
+              class="fail-card"
+              data-category={fail.category}
+              data-search={searchText}
+            >
+              {fail.imageUrl && <img class="fail-image" src={fail.imageUrl} alt="" loading="lazy" />}
+              <div class="card-meta">
+                <span>{fail.category}</span>
+                <strong>{fail.severity}</strong>
+              </div>
+              <h2>{fail.title}</h2>
+              <p>{fail.body}</p>
+              {fail.author && (
+                <p class="attribution">
+                  Submitted by{' '}
+                  {fail.authorUrl ? (
+                    <a href={fail.authorUrl}>@{fail.author}</a>
+                  ) : (
+                    <span>@{fail.author}</span>
+                  )}
+                </p>
+              )}
+              <div class="fail-links">
+                {fail.url && <a href={fail.url}>Issue #{fail.number}</a>}
+                {fail.referenceUrl && <a href={fail.referenceUrl}>Open reference</a>}
+                {fail.tool && <span>{fail.tool}</span>}
+                {fail.count && <span>{fail.count} looped</span>}
+              </div>
+              <div class="share-row" aria-label={`Share ${fail.title}`}>
+                <span>Share</span>
+                {itemShareLinks.map((link) => (
+                  <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+                ))}
+              </div>
+            </article>
+          );
+        })}
+      </section>
+
+      <p class="empty" id="wall-empty" hidden>No matching oops yet.</p>
+
+      <footer>
+        <span>Submissions are reviewed before publishing.</span>
+        <a href={site.approvedIssuesUrl}>View approved issues on GitHub</a>
+      </footer>
+    </main>
+
+    <script>
+      const search = document.querySelector('#wall-search');
+      const category = document.querySelector('#wall-category');
+      const cards = Array.from(document.querySelectorAll('.fail-card'));
+      const count = document.querySelector('#wall-count');
+      const empty = document.querySelector('#wall-empty');
+
+      function updateWall() {
+        const query = search.value.trim().toLowerCase();
+        const selectedCategory = category.value;
+        let visible = 0;
+
+        cards.forEach((card) => {
+          const matchesQuery = !query || card.dataset.search.includes(query);
+          const matchesCategory = !selectedCategory || card.dataset.category === selectedCategory;
+          const shouldShow = matchesQuery && matchesCategory;
+
+          card.hidden = !shouldShow;
+          if (shouldShow) visible += 1;
+        });
+
+        count.textContent = `${visible} item${visible === 1 ? '' : 's'}`;
+        empty.hidden = visible !== 0;
+      }
+
+      search.addEventListener('input', updateWall);
+      category.addEventListener('change', updateWall);
+    </script>
+  </body>
+</html>
+
+<style>
+  :root {
+    --ink: #17120f;
+    --paper: #f7f3e8;
+    --paper-2: #efe4d1;
+    --signal: #d94d2b;
+    --acid: #c6f000;
+    --blue: #22577a;
+    --line: rgba(23, 18, 15, 0.18);
+    --muted: rgba(23, 18, 15, 0.68);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    background:
+      linear-gradient(90deg, rgba(23, 18, 15, 0.06) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(23, 18, 15, 0.06) 1px, transparent 1px),
+      var(--paper);
+    background-size: 46px 46px, 46px 46px, auto;
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body { margin: 0; }
+  a { color: inherit; }
+  main { overflow: hidden; }
+
+  nav, .page-head, .controls, .wall-grid, footer, .empty {
+    margin: 0 auto;
+    max-width: 1160px;
+    width: 100%;
+  }
+
+  nav {
+    align-items: center;
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    padding: 22px;
+  }
+
+  .brand {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 1.08rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 18px;
+    font-size: 0.94rem;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .page-head {
+    align-items: end;
+    display: grid;
+    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+    padding: 62px 22px 30px;
+  }
+
+  .eyebrow {
+    color: var(--signal);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  h1, h2, p { margin-top: 0; }
+
+  h1 {
+    font-size: clamp(3.2rem, 8vw, 6.6rem);
+    letter-spacing: 0;
+    line-height: 0.92;
+    margin-bottom: 22px;
+  }
+
+  .lede {
+    color: var(--muted);
+    font-size: clamp(1.08rem, 2vw, 1.28rem);
+    line-height: 1.55;
+    margin-bottom: 0;
+    max-width: 740px;
+  }
+
+  .share-panel {
+    justify-self: end;
+    width: 100%;
+  }
+
+  .share-panel > span,
+  .share-row > span,
+  .controls span {
+    color: var(--muted);
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .share-panel div,
+  .share-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .share-panel a,
+  .share-row a,
+  .fail-links a,
+  .fail-links span {
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    display: inline-flex;
+    font-size: 0.86rem;
+    font-weight: 900;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 10px;
+    text-decoration: none;
+  }
+
+  .controls {
+    align-items: end;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: minmax(240px, 1fr) minmax(190px, 260px) auto;
+    padding: 0 22px 24px;
+  }
+
+  input, select {
+    background: rgba(255, 255, 255, 0.7);
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    font: inherit;
+    min-height: 48px;
+    padding: 0 12px;
+    width: 100%;
+  }
+
+  #wall-count {
+    color: var(--muted);
+    font-weight: 900;
+    margin: 0 0 13px;
+    white-space: nowrap;
+  }
+
+  .wall-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding: 0 22px 78px;
+  }
+
+  .fail-card {
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px;
+  }
+
+  .fail-card:nth-child(3n + 2) { background: var(--paper-2); }
+  .fail-card:nth-child(3n) { background: #e5f0ee; }
+
+  .fail-image {
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    display: block;
+    margin-bottom: 18px;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .card-meta {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .card-meta span,
+  .card-meta strong {
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 7px 9px;
+  }
+
+  .card-meta span {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .card-meta strong {
+    background: rgba(217, 77, 43, 0.12);
+    color: var(--signal);
+  }
+
+  .fail-card h2 {
+    font-size: 1.25rem;
+    letter-spacing: 0;
+    line-height: 1.16;
+    margin-bottom: 12px;
+  }
+
+  .fail-card p {
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .fail-card .attribution {
+    color: rgba(23, 18, 15, 0.58);
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 0;
+  }
+
+  .attribution a { color: var(--ink); }
+
+  .fail-links {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .share-row {
+    border-top: 1px solid var(--line);
+    margin-top: 16px;
+    padding-top: 16px;
+  }
+
+  .empty {
+    color: var(--muted);
+    font-size: 1.1rem;
+    font-weight: 900;
+    padding: 0 22px 78px;
+  }
+
+  footer {
+    align-items: center;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.92rem;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 28px 22px 42px;
+  }
+
+  footer a { font-weight: 900; }
+
+  @media (max-width: 860px) {
+    .page-head,
+    .controls {
+      grid-template-columns: 1fr;
+    }
+
+    .share-panel {
+      justify-self: start;
+    }
+
+    .wall-grid {
+      grid-template-columns: 1fr;
+    }
+
+    #wall-count {
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 520px) {
+    nav {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .nav-links {
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.86rem;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+    }
+  }
+</style>

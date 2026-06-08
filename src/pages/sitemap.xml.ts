@@ -14,6 +14,11 @@ export const GET: APIRoute = () =>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
+  <url>
+    <loc>https://${site.domain}/wall/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
 `, {
     headers: {
