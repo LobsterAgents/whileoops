@@ -45,6 +45,13 @@ body:
     validations:
       required: true
 
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or images
+      description: Optional. Drag and drop or paste redacted images here. Remove secrets, customer data, internal URLs, private names, and anything confidential before uploading.
+      placeholder: Paste or drag redacted screenshots here.
+
   - type: dropdown
     id: severity
     attributes:
@@ -84,6 +91,8 @@ body:
         - label: I own this submission or have the rights needed to submit it.
           required: true
         - label: I agree accepted submissions may be published and reused under CC BY 4.0.
+          required: true
+        - label: I confirm any uploaded images are redacted and safe to publish.
           required: true
         - label: I confirm this submission does not include secrets, credentials, confidential data, or private personal information.
           required: true
