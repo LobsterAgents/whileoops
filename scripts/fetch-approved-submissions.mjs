@@ -30,6 +30,7 @@ const submissions = issues
       title: cleanTitle(issue.title),
       url: issue.html_url,
       author: issue.user?.login || 'unknown',
+      authorUrl: issue.user?.html_url || null,
       createdAt: issue.created_at,
       submissionType: fields['Submission type'] || 'Submission',
       category: fields.Category || 'Other',

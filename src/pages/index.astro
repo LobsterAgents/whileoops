@@ -96,6 +96,16 @@ const websiteSchema = {
               </div>
               <h3>{fail.title}</h3>
               <p>{fail.body}</p>
+              {fail.author && (
+                <p class="attribution">
+                  Submitted by{' '}
+                  {fail.authorUrl ? (
+                    <a href={fail.authorUrl}>@{fail.author}</a>
+                  ) : (
+                    <span>@{fail.author}</span>
+                  )}
+                </p>
+              )}
               <div class="fail-links">
                 {fail.url && <a href={fail.url}>Issue #{fail.number}</a>}
                 {fail.referenceUrl && <a href={fail.referenceUrl}>Open reference</a>}
@@ -133,7 +143,8 @@ const websiteSchema = {
           </p>
           <p>
             You keep ownership of what you submit. By submitting, you agree it can be published
-            and reused under <a href={site.contentLicenseUrl}>{site.contentLicenseName}</a>.
+            and reused under <a href={site.contentLicenseUrl}>{site.contentLicenseName}</a>, with
+            attribution to your GitHub username unless you ask for a different credit.
           </p>
           <a class="button primary" href={issueFormUrl}>Open the issue form</a>
         </div>
@@ -487,6 +498,17 @@ const websiteSchema = {
   .fail-card p, .rule-grid p, .submit-copy p {
     color: var(--muted);
     line-height: 1.55;
+  }
+
+  .fail-card .attribution {
+    color: rgba(23, 18, 15, 0.58);
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin-bottom: 0;
+  }
+
+  .attribution a {
+    color: var(--ink);
   }
 
   .fail-links {

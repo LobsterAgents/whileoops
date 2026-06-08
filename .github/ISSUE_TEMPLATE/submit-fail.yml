@@ -17,6 +17,8 @@ body:
 
         You keep ownership of your submission. By submitting, you agree that accepted submissions may be published and reused under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
 
+        Published submissions may credit the GitHub username attached to the issue unless you ask for a different attribution. Public references should credit and link the original source separately.
+
   - type: dropdown
     id: submission-type
     attributes:
@@ -110,6 +112,8 @@ body:
         - label: I own this submission or have the rights needed to submit it.
           required: true
         - label: I agree accepted submissions may be published and reused under CC BY 4.0.
+          required: true
+        - label: I understand approved submissions may credit my GitHub username unless I request a different attribution.
           required: true
         - label: If I included a public reference, I linked to the original source instead of copying full copyrighted content.
           required: true
