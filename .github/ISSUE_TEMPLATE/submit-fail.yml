@@ -1,5 +1,5 @@
 name: Submit a #fail
-description: Share an AI agent, automation, or workflow failure for whileoops
+description: Share an AI agent fail, public reference, screenshot, video, or workflow oops for whileoops
 title: "[FAIL]: "
 labels: ["submission", "needs-review"]
 body:
@@ -10,14 +10,32 @@ body:
 
         Redact secrets, API keys, customer data, private URLs, internal company details, and screenshots that show anything sensitive. Submissions are reviewed before publishing.
 
+        Public references are welcome: news articles, X/Twitter posts, TikToks, GitHub issues, blog posts, videos, and other source links. Do not paste full copyrighted articles or private content. Add a short note and link to the original.
+
         You keep ownership of your submission. By submitting, you agree that accepted submissions may be published and reused under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
 
   - type: input
     id: fail-title
     attributes:
-      label: Fail title
+      label: Title
       description: Keep it short and punchy.
       placeholder: My agent spent $47 summarizing its own summaries
+    validations:
+      required: true
+
+  - type: dropdown
+    id: submission-type
+    attributes:
+      label: Submission type
+      options:
+        - My own fail
+        - Public reference
+        - Screenshot or image
+        - News article
+        - X/Twitter post
+        - TikTok or video
+        - GitHub issue or PR
+        - Other
     validations:
       required: true
 
@@ -39,11 +57,18 @@ body:
   - type: textarea
     id: story
     attributes:
-      label: What happened?
-      description: Tell the short version. Funny details welcome. Confidential details are not.
-      placeholder: The agent was supposed to...
+      label: What happened or why does this belong here?
+      description: Tell the short version or explain what failed in the public reference. Funny details welcome. Confidential details are not.
+      placeholder: The agent was supposed to... / This article belongs here because...
     validations:
       required: true
+
+  - type: input
+    id: reference-url
+    attributes:
+      label: Reference URL
+      description: Optional. Paste a public link to a news article, X/Twitter post, TikTok, GitHub issue, blog post, video, or other source.
+      placeholder: https://...
 
   - type: textarea
     id: screenshots
@@ -91,6 +116,8 @@ body:
         - label: I own this submission or have the rights needed to submit it.
           required: true
         - label: I agree accepted submissions may be published and reused under CC BY 4.0.
+          required: true
+        - label: If I included a public reference, I linked to the original source instead of copying full copyrighted content.
           required: true
         - label: I confirm any uploaded images are redacted and safe to publish.
           required: true
