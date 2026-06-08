@@ -1,0 +1,89 @@
+name: Submit a #fail
+description: Share an AI agent, automation, or workflow failure for whileoops
+title: "[FAIL]: "
+labels: ["submission", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for submitting a fail.
+
+        Redact secrets, API keys, customer data, private URLs, internal company details, and screenshots that show anything sensitive. Submissions are reviewed before publishing.
+
+        You keep ownership of your submission. By submitting, you agree that accepted submissions may be published and reused under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+
+  - type: input
+    id: fail-title
+    attributes:
+      label: Fail title
+      description: Keep it short and punchy.
+      placeholder: My agent spent $47 summarizing its own summaries
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Infinite Loop
+        - Tool Call Gone Wrong
+        - Browser Automation Fail
+        - Hallucinated Confidence
+        - Token Bonfire
+        - Human Had To Intervene
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: story
+    attributes:
+      label: What happened?
+      description: Tell the short version. Funny details welcome. Confidential details are not.
+      placeholder: The agent was supposed to...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Funny
+        - Expensive
+        - Still Debugging
+        - Human Rescue Required
+        - Career-Limiting
+    validations:
+      required: true
+
+  - type: input
+    id: tool
+    attributes:
+      label: Tool or agent involved
+      description: Optional. Public tool names are fine. Avoid private team/client names.
+      placeholder: Browser agent, coding agent, internal workflow, etc.
+
+  - type: textarea
+    id: redaction-check
+    attributes:
+      label: Redaction check
+      description: Confirm what you removed or anonymized.
+      placeholder: I removed tokens, company names, customer data, and internal URLs.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: consent
+    attributes:
+      label: Publishing consent
+      options:
+        - label: I understand this may be published publicly after review.
+          required: true
+        - label: I own this submission or have the rights needed to submit it.
+          required: true
+        - label: I agree accepted submissions may be published and reused under CC BY 4.0.
+          required: true
+        - label: I confirm this submission does not include secrets, credentials, confidential data, or private personal information.
+          required: true

@@ -1,0 +1,530 @@
+---
+import { site } from '../data/site';
+
+const canonical = `https://${site.domain}/`;
+const issueFormUrl = site.submitUrl;
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  url: canonical,
+  description: site.description,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{site.title}</title>
+    <meta name="description" content={site.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={site.title} />
+    <meta property="og:description" content={site.description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+  </head>
+  <body>
+    <main>
+      <section class="hero">
+        <nav aria-label="Primary">
+          <a class="brand" href="/">whileoops</a>
+          <div class="nav-links">
+            <a href="#fails">Browse</a>
+            <a href="#submit">Submit</a>
+            <a href="/terms/">Terms</a>
+            <a href={site.repoUrl}>GitHub</a>
+          </div>
+        </nav>
+
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <p class="eyebrow">Public incident reports for agentic oops</p>
+            <h1>AI agents are just expensive while loops. Send oops.</h1>
+            <p class="lede">
+              A tiny museum of automation faceplants, runaway tools, token bonfires, and workflows
+              that really should have asked a human sooner.
+            </p>
+            <div class="actions">
+              <a class="button primary" href={issueFormUrl}>Submit a #fail</a>
+              <a class="button secondary" href="#fails">Read the wall</a>
+            </div>
+          </div>
+
+          <aside class="terminal" aria-label="Loop failure preview">
+            <div class="terminal-top">
+              <span></span><span></span><span></span>
+              <strong>agent-runner.log</strong>
+            </div>
+            <div class="terminal-body">
+              <p><span>001</span> plan: solve problem</p>
+              <p><span>002</span> tool: click("continue")</p>
+              <p><span>003</span> tool: click("continue")</p>
+              <p><span>004</span> tool: click("continue")</p>
+              <p class="warning"><span>185</span> human: why are you still clicking?</p>
+              <p class="crash"><span>186</span> while(oops) {'{'} true {'}'}</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="ticker" aria-label="Categories">
+        {site.categories.map((category) => <span>{category}</span>)}
+      </section>
+
+      <section id="fails" class="wall" aria-labelledby="fails-heading">
+        <div class="section-heading">
+          <p class="eyebrow">The wall</p>
+          <h2 id="fails-heading">Recently submitted oops from the loop mines.</h2>
+        </div>
+        <div class="fail-grid">
+          {site.sampleFails.map((fail) => (
+            <article class="fail-card">
+              <div class="card-meta">
+                <span>{fail.category}</span>
+                <strong>{fail.severity}</strong>
+              </div>
+              <h3>{fail.title}</h3>
+              <p>{fail.body}</p>
+              <button type="button" aria-label={`Loop count for ${fail.title}`}>
+                {fail.count} looped
+              </button>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="submit" class="submit-band" aria-labelledby="submit-heading">
+        <div>
+          <p class="eyebrow">Submit safely</p>
+          <h2 id="submit-heading">Your fail goes through GitHub review first.</h2>
+        </div>
+        <div class="submit-copy">
+          <p>
+            The form opens a GitHub issue with structured fields. Submissions start as
+            <strong>needs-review</strong>, then approved posts can be published to the wall.
+          </p>
+          <p>
+            Redact secrets, customer data, credentials, private company details, and screenshots
+            that show anything sensitive. Funny is good. Leaking production is not.
+          </p>
+          <p>
+            You keep ownership of what you submit. By submitting, you agree it can be published
+            and reused under <a href={site.contentLicenseUrl}>{site.contentLicenseName}</a>.
+          </p>
+          <a class="button primary" href={issueFormUrl}>Open the issue form</a>
+        </div>
+      </section>
+
+      <section class="rules" aria-labelledby="rules-heading">
+        <div class="section-heading">
+          <p class="eyebrow">House rules</p>
+          <h2 id="rules-heading">Laugh at the loop, not at private data.</h2>
+        </div>
+        <div class="rule-grid">
+          <article>
+            <h3>Redact first</h3>
+            <p>No API keys, tokens, customer names, internal URLs, or confidential screenshots.</p>
+          </article>
+          <article>
+            <h3>Name tools carefully</h3>
+            <p>Call out public tools when useful. Avoid doxxing teams, clients, or coworkers.</p>
+          </article>
+          <article>
+            <h3>Keep it constructive</h3>
+            <p>The point is better agent design, better evals, and fewer expensive loops.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <span>Submissions are reviewed before publishing.</span>
+        <a href="/terms/">Submission terms</a>
+      </footer>
+    </main>
+  </body>
+</html>
+
+<style>
+  :root {
+    --ink: #17120f;
+    --paper: #f7f3e8;
+    --paper-2: #efe4d1;
+    --signal: #d94d2b;
+    --acid: #c6f000;
+    --blue: #22577a;
+    --line: rgba(23, 18, 15, 0.18);
+    --muted: rgba(23, 18, 15, 0.68);
+    --shadow: 0 22px 70px rgba(23, 18, 15, 0.18);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body { margin: 0; }
+  a { color: inherit; }
+  main { overflow: hidden; }
+
+  .hero {
+    min-height: 94vh;
+    background:
+      linear-gradient(90deg, rgba(23, 18, 15, 0.06) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(23, 18, 15, 0.06) 1px, transparent 1px),
+      radial-gradient(circle at 72% 22%, rgba(198, 240, 0, 0.34), transparent 30%),
+      linear-gradient(135deg, var(--paper), #fffaf0 54%, #e8f1ef);
+    background-size: 46px 46px, 46px 46px, auto, auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  nav {
+    align-items: center;
+    display: flex;
+    gap: 24px;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1160px;
+    padding: 22px;
+    width: 100%;
+  }
+
+  .brand {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 1.08rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 18px;
+    font-size: 0.94rem;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .hero-layout {
+    align-items: center;
+    display: grid;
+    flex: 1;
+    gap: 48px;
+    grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+    margin: 0 auto;
+    max-width: 1160px;
+    padding: 48px 22px 86px;
+    width: 100%;
+  }
+
+  .hero-copy { max-width: 760px; }
+
+  .eyebrow {
+    color: var(--signal);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  h1, h2, h3, p { margin-top: 0; }
+
+  h1 {
+    font-size: clamp(3.25rem, 8vw, 6.8rem);
+    letter-spacing: 0;
+    line-height: 0.92;
+    margin-bottom: 24px;
+    max-width: 850px;
+  }
+
+  .lede {
+    color: var(--muted);
+    font-size: clamp(1.12rem, 2vw, 1.34rem);
+    line-height: 1.55;
+    margin-bottom: 28px;
+    max-width: 680px;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .button {
+    align-items: center;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    display: inline-flex;
+    font-weight: 900;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 18px;
+    text-decoration: none;
+  }
+
+  .button.primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .button.secondary {
+    background: rgba(255, 255, 255, 0.58);
+  }
+
+  .terminal {
+    background: #17120f;
+    border: 2px solid rgba(23, 18, 15, 0.92);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    color: #f9f0dc;
+    min-height: 420px;
+    overflow: hidden;
+    transform: rotate(1.4deg);
+  }
+
+  .terminal-top {
+    align-items: center;
+    border-bottom: 1px solid rgba(249, 240, 220, 0.18);
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px;
+  }
+
+  .terminal-top span {
+    background: var(--signal);
+    border-radius: 999px;
+    display: block;
+    height: 12px;
+    width: 12px;
+  }
+
+  .terminal-top span:nth-child(2) { background: #f5b841; }
+  .terminal-top span:nth-child(3) { background: var(--acid); }
+
+  .terminal-top strong {
+    color: rgba(249, 240, 220, 0.7);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.88rem;
+    margin-left: 8px;
+  }
+
+  .terminal-body {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: clamp(0.9rem, 1.4vw, 1.02rem);
+    padding: 24px 18px 30px;
+  }
+
+  .terminal-body p {
+    border-bottom: 1px solid rgba(249, 240, 220, 0.08);
+    line-height: 1.8;
+    margin: 0;
+    overflow-wrap: anywhere;
+    padding: 8px 0;
+  }
+
+  .terminal-body span {
+    color: rgba(249, 240, 220, 0.38);
+    display: inline-block;
+    width: 44px;
+  }
+
+  .terminal-body .warning { color: #f5b841; }
+  .terminal-body .crash { color: var(--acid); }
+
+  .ticker {
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 14px max(22px, calc((100vw - 1160px) / 2));
+  }
+
+  .ticker span {
+    border: 1px solid rgba(247, 243, 232, 0.25);
+    border-radius: 999px;
+    flex: 0 0 auto;
+    font-size: 0.88rem;
+    font-weight: 800;
+    padding: 8px 12px;
+  }
+
+  .wall, .rules {
+    margin: 0 auto;
+    max-width: 1160px;
+    padding: 78px 22px;
+  }
+
+  footer {
+    align-items: center;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.92rem;
+    gap: 12px;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1160px;
+    padding: 28px 22px 42px;
+  }
+
+  footer a {
+    font-weight: 900;
+  }
+
+  .section-heading {
+    align-items: end;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(280px, 1.1fr);
+    margin-bottom: 32px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    letter-spacing: 0;
+    line-height: 1;
+    margin-bottom: 0;
+  }
+
+  .fail-grid, .rule-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .fail-card, .rule-grid article {
+    background: rgba(255, 255, 255, 0.66);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 22px;
+  }
+
+  .fail-card:nth-child(2) {
+    background: var(--paper-2);
+  }
+
+  .fail-card:nth-child(3) {
+    background: #e5f0ee;
+  }
+
+  .card-meta {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .card-meta span, .card-meta strong {
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    padding: 7px 9px;
+  }
+
+  .card-meta span {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .card-meta strong {
+    background: rgba(217, 77, 43, 0.12);
+    color: var(--signal);
+  }
+
+  .fail-card h3, .rule-grid h3 {
+    font-size: 1.25rem;
+    line-height: 1.16;
+    margin-bottom: 12px;
+  }
+
+  .fail-card p, .rule-grid p, .submit-copy p {
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .fail-card button {
+    background: transparent;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 900;
+    min-height: 40px;
+    padding: 0 12px;
+  }
+
+  .submit-band {
+    background: var(--blue);
+    color: white;
+    display: grid;
+    gap: 34px;
+    grid-template-columns: minmax(0, 0.85fr) minmax(280px, 1.15fr);
+    padding: 76px max(22px, calc((100vw - 1160px) / 2));
+  }
+
+  .submit-band .eyebrow { color: var(--acid); }
+  .submit-copy p { color: rgba(255, 255, 255, 0.78); }
+  .submit-copy a { color: white; font-weight: 900; }
+  .submit-copy strong { color: white; }
+  .submit-band .button.primary {
+    background: var(--acid);
+    border-color: var(--acid);
+    color: var(--ink);
+  }
+
+  @media (max-width: 860px) {
+    .hero { min-height: auto; }
+    .hero-layout, .section-heading, .submit-band {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-layout { padding-top: 26px; }
+    .terminal {
+      min-height: 340px;
+      transform: none;
+    }
+
+    .fail-grid, .rule-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-links {
+      gap: 12px;
+      font-size: 0.86rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    nav {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    h1 {
+      font-size: 3.2rem;
+    }
+
+    .button {
+      width: 100%;
+    }
+  }
+</style>

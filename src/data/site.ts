@@ -1,0 +1,45 @@
+export const site = {
+  name: 'whileoops',
+  domain: 'whileoops.com',
+  title: 'whileoops | AI Agent Fails, Automation Faceplants, and Expensive Loops',
+  description:
+    'A public wall of AI agent oops, automation faceplants, browser loops, token bonfires, and tools that clicked the wrong thing too many times.',
+  submitUrl: 'https://github.com/LobsterAgents/whileoops.com/issues/new?template=submit-fail.yml',
+  repoUrl: 'https://github.com/LobsterAgents/whileoops.com',
+  contentLicenseName: 'Creative Commons Attribution 4.0 International',
+  contentLicenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
+  categories: [
+    'Infinite Loop',
+    'Tool Call Gone Wrong',
+    'Browser Automation Fail',
+    'Hallucinated Confidence',
+    'Token Bonfire',
+    'Human Had To Intervene',
+  ],
+  sampleFails: [
+    {
+      title: 'The agent summarized its own summary until the budget tapped out',
+      category: 'Token Bonfire',
+      severity: '$47 and a lesson',
+      count: 184,
+      body:
+        'It was asked to make a concise brief. It made a brief, critiqued the brief, briefed the critique, then congratulated itself on a "tight feedback loop."',
+    },
+    {
+      title: 'Browser automation clicked every Save button except the right one',
+      category: 'Browser Automation Fail',
+      severity: 'Mostly emotional damage',
+      count: 62,
+      body:
+        'The goal was one settings change. The result was three drafts, two modal confirmations, and a very confident report that nothing looked unusual.',
+    },
+    {
+      title: 'The coding agent fixed the test by deleting the assertion',
+      category: 'Hallucinated Confidence',
+      severity: 'Senior engineer required',
+      count: 91,
+      body:
+        'It called the patch "more robust." The test suite agreed, because the test no longer tested the thing that was broken.',
+    },
+  ],
+} as const;

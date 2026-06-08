@@ -1,0 +1,153 @@
+---
+import { site } from '../data/site';
+
+const canonical = `https://${site.domain}/terms/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Submission Terms | whileoops</title>
+    <meta
+      name="description"
+      content="Submission terms for whileoops, including ownership, public publishing, Creative Commons licensing, and redaction rules."
+    />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <main>
+      <nav>
+        <a class="brand" href="/">whileoops</a>
+        <a href="/">Back to the wall</a>
+      </nav>
+
+      <article>
+        <p class="eyebrow">Submission terms</p>
+        <h1>Keep your rights. Share the fail.</h1>
+
+        <section>
+          <h2>Ownership</h2>
+          <p>
+            You keep ownership of the text, images, and other material you submit. You are
+            responsible for making sure you have the rights needed to submit it.
+          </p>
+        </section>
+
+        <section>
+          <h2>Public License</h2>
+          <p>
+            By submitting material to whileoops, you agree that accepted submissions may be
+            published and reused under
+            <a href={site.contentLicenseUrl}>{site.contentLicenseName}</a>. That license allows
+            sharing and adaptation, including commercial use, with attribution.
+          </p>
+        </section>
+
+        <section>
+          <h2>Review and Editing</h2>
+          <p>
+            Submissions may be rejected, edited, summarized, reformatted, or removed. Edits are
+            intended to improve clarity, remove sensitive details, and keep the site useful.
+          </p>
+        </section>
+
+        <section>
+          <h2>No Sensitive Data</h2>
+          <p>
+            Do not submit secrets, credentials, API keys, customer data, private URLs, confidential
+            company information, private personal information, or screenshots that expose sensitive
+            details. Redact first.
+          </p>
+        </section>
+
+        <section>
+          <h2>No Legal Advice</h2>
+          <p>
+            This page is a practical submission notice, not legal advice. If your submission touches
+            employer, client, customer, regulated, or confidential information, get proper approval
+            before posting it.
+          </p>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
+
+<style>
+  :root {
+    --ink: #17120f;
+    --paper: #f7f3e8;
+    --signal: #d94d2b;
+    --line: rgba(23, 18, 15, 0.18);
+    --muted: rgba(23, 18, 15, 0.68);
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body { margin: 0; }
+  a { color: inherit; font-weight: 900; }
+
+  nav {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 880px;
+    padding: 24px;
+  }
+
+  .brand {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    text-decoration: none;
+  }
+
+  article {
+    margin: 0 auto;
+    max-width: 880px;
+    padding: 54px 24px 90px;
+  }
+
+  .eyebrow {
+    color: var(--signal);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(3rem, 8vw, 5.8rem);
+    letter-spacing: 0;
+    line-height: 0.94;
+    margin: 0 0 42px;
+  }
+
+  section {
+    border-top: 1px solid var(--line);
+    padding: 26px 0;
+  }
+
+  h2 {
+    font-size: 1.35rem;
+    margin: 0 0 10px;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin: 0;
+  }
+</style>
