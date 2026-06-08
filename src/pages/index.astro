@@ -1,8 +1,10 @@
 ---
 import { site } from '../data/site';
+import approvedSubmissions from '../data/generated/submissions.json';
 
 const canonical = `https://${site.domain}/`;
 const issueFormUrl = site.submitUrl;
+const fails = approvedSubmissions.length > 0 ? approvedSubmissions : site.sampleFails;
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -80,20 +82,26 @@ const websiteSchema = {
       <section id="fails" class="wall" aria-labelledby="fails-heading">
         <div class="section-heading">
           <p class="eyebrow">The wall</p>
-          <h2 id="fails-heading">Recently submitted oops from the loop mines.</h2>
+          <h2 id="fails-heading">
+            {approvedSubmissions.length > 0 ? 'Approved oops from the loop mines.' : 'Sample oops from the loop mines.'}
+          </h2>
         </div>
         <div class="fail-grid">
-          {site.sampleFails.map((fail) => (
+          {fails.map((fail) => (
             <article class="fail-card">
+              {fail.imageUrl && <img class="fail-image" src={fail.imageUrl} alt="" loading="lazy" />}
               <div class="card-meta">
                 <span>{fail.category}</span>
                 <strong>{fail.severity}</strong>
               </div>
               <h3>{fail.title}</h3>
               <p>{fail.body}</p>
-              <button type="button" aria-label={`Loop count for ${fail.title}`}>
-                {fail.count} looped
-              </button>
+              <div class="fail-links">
+                {fail.url && <a href={fail.url}>Issue #{fail.number}</a>}
+                {fail.referenceUrl && <a href={fail.referenceUrl}>Open reference</a>}
+                {fail.tool && <span>{fail.tool}</span>}
+                {fail.count && <span>{fail.count} looped</span>}
+              </div>
             </article>
           ))}
         </div>
@@ -435,6 +443,16 @@ const websiteSchema = {
     background: #e5f0ee;
   }
 
+  .fail-image {
+    aspect-ratio: 16 / 10;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    display: block;
+    margin-bottom: 18px;
+    object-fit: cover;
+    width: 100%;
+  }
+
   .card-meta {
     align-items: center;
     display: flex;
@@ -471,15 +489,26 @@ const websiteSchema = {
     line-height: 1.55;
   }
 
-  .fail-card button {
+  .fail-links {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .fail-links a,
+  .fail-links span {
     background: transparent;
     border: 2px solid var(--line);
     border-radius: 8px;
     color: var(--ink);
-    cursor: pointer;
+    display: inline-flex;
     font-weight: 900;
+    justify-content: center;
     min-height: 40px;
     padding: 0 12px;
+    text-decoration: none;
   }
 
   .submit-band {
