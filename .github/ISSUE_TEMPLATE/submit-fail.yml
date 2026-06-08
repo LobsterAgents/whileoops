@@ -1,5 +1,5 @@
 name: "Submit a #fail"
-description: Share an AI agent fail, public reference, screenshot, video, or workflow oops for whileoops
+description: Share an AI agent fail, public reference, screenshot, video, or workflow oops for while(oops)
 title: "[FAIL]: "
 labels: ["submission", "needs-review"]
 body:

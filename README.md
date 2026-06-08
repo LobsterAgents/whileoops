@@ -1,4 +1,4 @@
-# whileoops.com
+# while(oops)
 
 A small Astro site for collecting AI agent oops, automation faceplants, token bonfires, and loops that should have stopped sooner.
 

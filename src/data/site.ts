@@ -1,7 +1,7 @@
 export const site = {
-  name: 'whileoops',
+  name: 'while(oops)',
   domain: 'whileoops.com',
-  title: 'whileoops | AI Agent Fails, Automation Faceplants, and Expensive Loops',
+  title: 'while(oops) | AI Agent Fails, Automation Faceplants, and Expensive Loops',
   description:
     'A public wall of AI agent oops, automation faceplants, browser loops, token bonfires, and tools that clicked the wrong thing too many times.',
   submitUrl: 'https://github.com/LobsterAgents/whileoops/issues/new?template=submit-fail.yml',
