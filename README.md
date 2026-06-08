@@ -22,8 +22,8 @@ The site uses a GitHub Issue Form:
 Before launch, update `src/data/site.ts`:
 
 ```ts
-submitUrl: 'https://github.com/LobsterAgents/whileoops.com/issues/new?template=submit-fail.yml',
-repoUrl: 'https://github.com/LobsterAgents/whileoops.com',
+submitUrl: 'https://github.com/LobsterAgents/whileoops/issues/new?template=submit-fail.yml',
+repoUrl: 'https://github.com/LobsterAgents/whileoops',
 ```
 
 ## Deploy
