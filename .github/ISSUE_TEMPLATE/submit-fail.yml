@@ -1,6 +1,6 @@
 name: "Submit a #fail"
 description: Share an AI agent fail, public reference, screenshot, video, or workflow oops for while(oops)
-title: "[FAIL]: "
+title: "[FAIL]: Short title here"
 labels: ["submission", "needs-review"]
 body:
   - type: markdown
@@ -13,15 +13,6 @@ body:
         Public references are welcome from known social media, news, video, blog, or developer platforms: news articles, X/Twitter posts, TikToks, YouTube videos, GitHub issues, and reputable blog posts. Unknown file hosts, private links, pastebins, leaked docs, and unverifiable sources should not be submitted. Do not paste full copyrighted articles or private content. Add a short note and link to the original.
 
         You keep ownership of your submission. By submitting, you agree that accepted submissions may be published and reused under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
-
-  - type: input
-    id: fail-title
-    attributes:
-      label: Title
-      description: Keep it short and punchy.
-      placeholder: My agent spent $47 summarizing its own summaries
-    validations:
-      required: true
 
   - type: dropdown
     id: submission-type
