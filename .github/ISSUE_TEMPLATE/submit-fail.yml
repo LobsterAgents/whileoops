@@ -10,7 +10,7 @@ body:
 
         Redact secrets, API keys, customer data, private URLs, internal company details, and screenshots that show anything sensitive. Submissions are reviewed before publishing.
 
-        Public references are welcome: news articles, X/Twitter posts, TikToks, GitHub issues, blog posts, videos, and other source links. Do not paste full copyrighted articles or private content. Add a short note and link to the original.
+        Public references are welcome from known social media, news, video, blog, or developer platforms: news articles, X/Twitter posts, TikToks, YouTube videos, GitHub issues, and reputable blog posts. Unknown file hosts, private links, pastebins, leaked docs, and unverifiable sources should not be submitted. Do not paste full copyrighted articles or private content. Add a short note and link to the original.
 
         You keep ownership of your submission. By submitting, you agree that accepted submissions may be published and reused under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
 
@@ -67,7 +67,7 @@ body:
     id: reference-url
     attributes:
       label: Reference URL
-      description: Optional. Paste a public link to a news article, X/Twitter post, TikTok, GitHub issue, blog post, video, or other source.
+      description: Optional. Paste a public link from a known social media, news, video, blog, or developer platform. Unknown file hosts, private links, pastebins, leaked docs, and unverifiable sources should not be submitted.
       placeholder: https://...
 
   - type: textarea
@@ -118,6 +118,8 @@ body:
         - label: I agree accepted submissions may be published and reused under CC BY 4.0.
           required: true
         - label: If I included a public reference, I linked to the original source instead of copying full copyrighted content.
+          required: true
+        - label: If I included a public reference, it is from a known social media, news, video, blog, or developer platform.
           required: true
         - label: I confirm any uploaded images are redacted and safe to publish.
           required: true
