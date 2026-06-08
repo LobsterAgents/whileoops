@@ -6,6 +6,7 @@ export const site = {
     'A public wall of AI agent oops, automation faceplants, browser loops, token bonfires, and tools that clicked the wrong thing too many times.',
   submitUrl: 'https://github.com/LobsterAgents/whileoops/issues/new?template=submit-fail.yml',
   repoUrl: 'https://github.com/LobsterAgents/whileoops',
+  socialImagePath: '/social-card.png',
   contentLicenseName: 'Creative Commons Attribution 4.0 International',
   contentLicenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
   categories: [

@@ -5,6 +5,8 @@ import approvedSubmissions from '../data/generated/submissions.json';
 const canonical = `https://${site.domain}/`;
 const issueFormUrl = site.submitUrl;
 const fails = approvedSubmissions.length > 0 ? approvedSubmissions : site.sampleFails;
+const socialImage = new URL(site.socialImagePath, canonical).toString();
+const wallShareLinks = getShareLinks(canonical, 'AI agents are just expensive while loops. Send oops.');
 const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -12,6 +14,41 @@ const websiteSchema = {
   url: canonical,
   description: site.description,
 };
+
+function getFailId(fail) {
+  return fail.number ? `fail-${fail.number}` : `fail-${slugify(fail.title)}`;
+}
+
+function getShareLinks(url, text) {
+  const encodedUrl = encodeURIComponent(url);
+  const encodedText = encodeURIComponent(text);
+
+  return [
+    {
+      label: 'X',
+      href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`,
+    },
+    {
+      label: 'LinkedIn',
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    },
+    {
+      label: 'Reddit',
+      href: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedText}`,
+    },
+    {
+      label: 'Facebook',
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    },
+  ];
+}
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 ---
 
 <!doctype html>
@@ -28,7 +65,17 @@ const websiteSchema = {
     <meta property="og:title" content={site.title} />
     <meta property="og:description" content={site.description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:secure_url" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="while(oops): AI agents are just expensive while loops. Send oops." />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={site.title} />
+    <meta name="twitter:description" content={site.description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content="while(oops): AI agents are just expensive while loops. Send oops." />
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </head>
   <body>
@@ -81,14 +128,29 @@ const websiteSchema = {
 
       <section id="fails" class="wall" aria-labelledby="fails-heading">
         <div class="section-heading">
-          <p class="eyebrow">The wall</p>
-          <h2 id="fails-heading">
-            {approvedSubmissions.length > 0 ? 'Approved oops from the loop mines.' : 'Sample oops from the loop mines.'}
-          </h2>
+          <div>
+            <p class="eyebrow">The wall</p>
+            <h2 id="fails-heading">
+              {approvedSubmissions.length > 0 ? 'Approved oops from the loop mines.' : 'Sample oops from the loop mines.'}
+            </h2>
+          </div>
+          <div class="share-panel" aria-label="Share the wall">
+            <span>Share the wall</span>
+            <div>
+              {wallShareLinks.map((link) => (
+                <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+              ))}
+            </div>
+          </div>
         </div>
         <div class="fail-grid">
-          {fails.map((fail) => (
-            <article class="fail-card">
+          {fails.map((fail) => {
+            const failUrl = new URL(`#${getFailId(fail)}`, canonical).toString();
+            const shareText = `${fail.title} | while(oops)`;
+            const itemShareLinks = getShareLinks(failUrl, shareText);
+
+            return (
+            <article id={getFailId(fail)} class="fail-card">
               {fail.imageUrl && <img class="fail-image" src={fail.imageUrl} alt="" loading="lazy" />}
               <div class="card-meta">
                 <span>{fail.category}</span>
@@ -112,8 +174,14 @@ const websiteSchema = {
                 {fail.tool && <span>{fail.tool}</span>}
                 {fail.count && <span>{fail.count} looped</span>}
               </div>
+              <div class="share-row" aria-label={`Share ${fail.title}`}>
+                <span>Share</span>
+                {itemShareLinks.map((link) => (
+                  <a href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+                ))}
+              </div>
             </article>
-          ))}
+          )})}
         </div>
       </section>
 
@@ -426,6 +494,43 @@ const websiteSchema = {
     margin-bottom: 32px;
   }
 
+  .share-panel {
+    justify-self: end;
+    max-width: 360px;
+    width: 100%;
+  }
+
+  .share-panel > span,
+  .share-row > span {
+    color: var(--muted);
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .share-panel div,
+  .share-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .share-panel a,
+  .share-row a {
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    color: var(--ink);
+    display: inline-flex;
+    font-size: 0.86rem;
+    font-weight: 900;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 10px;
+    text-decoration: none;
+  }
+
   h2 {
     font-size: clamp(2rem, 4vw, 4rem);
     letter-spacing: 0;
@@ -517,6 +622,12 @@ const websiteSchema = {
     flex-wrap: wrap;
     gap: 8px;
     margin-top: 18px;
+  }
+
+  .share-row {
+    border-top: 1px solid var(--line);
+    margin-top: 16px;
+    padding-top: 16px;
   }
 
   .fail-links a,
